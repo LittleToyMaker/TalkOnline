@@ -1,0 +1,123 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="zwh.talkonline_data.mapper.MessageMapper">
+    <resultMap id="messageMap" type="zwh.talkonline_data_pub.model.Message">
+        <result column="id" property="id" jdbcType="INTEGER" />
+        <result column="content" property="content" jdbcType="VARCHAR" />
+        <result column="fromAccountId" property="fromAccountId" jdbcType="INTEGER" />
+        <result column="toAccountId" property="toAccountId" jdbcType="INTEGER" />
+        <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="status" property="status" jdbcType="INTEGER" />
+        <result column="readStatus" property="readStatus" jdbcType="INTEGER" />
+    </resultMap>
+
+    <sql id="all_column">
+        id, content, fromAccountId, toAccountId, createTime, status, readStatus
+    </sql>
+
+    <select id="count" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT COUNT *
+        FROM t_message
+        <trim prefix="WHERE" prefixOverrides="AND ">
+            <if test="id != null">
+                id = #{id}
+            </if>
+            <if test="content != null">
+                content LIKE CONCAT('%', #{content}, '%')
+            </if>
+            <if test="fromAccountId != null">
+                fromAccountId = #{fromAccountId}
+            </if>
+            <if test="toAccountId != null">
+                toAccountId = #{toAccountId}
+            </if>
+            <if test="minCreateTime != null">
+                createTime >= #{minCreateTime}
+            </if>
+            <if test="maxCreateTime != null">
+                <![CDATA[createTime <= #{maxCreateTime} ]]>
+            </if>
+            <if test="status != null">
+                , status = #{status}
+            </if>
+            <if test="readStatus != null">
+                , readStatus = #{readStatus}
+            </if>
+        </trim>
+    </select>
+
+    <select id="selectByPage" parameterType="java.util.Map" resultMap="messageMap">
+        SELECT <include refid="all_column"/>
+        FROM t_message
+        <trim prefix="WHERE" prefixOverrides="AND ">
+            <if test="id != null">
+                id = #{id}
+            </if>
+            <if test="content != null">
+                content LIKE CONCAT('%', #{content}, '%')
+            </if>
+            <if test="fromAccountId != null">
+                fromAccountId = #{fromAccountId}
+            </if>
+            <if test="toAccountId != null">
+                toAccountId = #{toAccountId}
+            </if>
+            <if test="minCreateTime != null">
+                createTime >= #{minCreateTime}
+            </if>
+            <if test="maxCreateTime != null">
+                <![CDATA[createTime <= #{maxCreateTime} ]]>
+            </if>
+            <if test="status != null">
+                , status = #{status}
+            </if>
+            <if test="readStatus != null">
+                , readStatus = #{readStatus}
+            </if>
+        </trim>
+        <if test="limit != null">
+            ORDER BY id
+            <if test="beginIndex == null">
+                limit #{limit}
+            </if>
+            <if test="beginIndex != null">
+                limit #{beginIndex}, #{limit}
+            </if>
+        </if>
+    </select>
+
+    <insert id="insert" parameterType="zwh.talkonline_data_pub.model.Message" useGeneratedKeys="true" keyProperty="id">
+        INSERT  INTO t_message (
+        id, content, fromAccountId, toAccountId, createTime
+        <if test="status != null">
+            , #{status}
+        </if>
+        <if test="readStatus != null">
+            , #{readStatus}
+        </if>
+        )
+        VALUES (
+        #{id}, #{content}, #{fromAccountId}, #{toAccountId}, now()
+        <if test="status != null">
+            , #{status}
+        </if>
+        <if test="readStatus != null">
+            , #{readStatus}
+        </if>
+        )
+    </insert>
+
+    <update id="update" parameterType="zwh.talkonline_data_pub.model.Message">
+        UPDATE t_message SET
+        updateTime = now()
+        <if test="status != null">
+            , status = #{status}
+        </if>
+        <if test="readStatus != null">
+            , readStatus = #{readStatus}
+        </if>
+        WHERE id = #{id}
+    </update>
+
+</mapper>

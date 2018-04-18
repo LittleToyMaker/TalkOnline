@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TALKONLINE</title>
+    <!-- 引入 Bootstrap -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+    <script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <script src="../js/home.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <textarea id="currAccountInfoText" class="form-control" cols="100%" rows="2" disabled="disabled"></textarea>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <textarea id="displayText" class="form-control" cols="100%" rows="10" disabled="disabled"></textarea>
+            </div>
+            <div class="col-md-6">
+                <textarea id="accountText" class="form-control" cols="100%" rows="10" disabled="disabled"></textarea>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <textarea id="talkText" class="form-control" cols="100%" rows="10"></textarea>
+                <button class="btn btn-primary" onclick="sendMsg()">发送</button>
+            </div>
+            <div class="col-md-6">
+                <textarea id="optText" class="form-control" cols="100%" rows="10"></textarea>
+                <button class="btn btn-primary" onclick="editTips()">修改账户信息</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
