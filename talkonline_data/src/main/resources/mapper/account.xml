@@ -32,31 +32,53 @@
         select <include refid="all_column"/>
         from t_account
         <trim prefix="WHERE" prefixOverrides="AND ">
-            <if test="minCreateTime != null">
-                createTime >= #{minCreateTime}
+            <if test="param1 != null">
+                status = #{param1}
             </if>
-            <if test="maxCreateTime != null">
-                <![CDATA[createTime <= #{maxCreateTime} ]]>
+            <if test="param2 != null">
+                createTime >= #{param2}
             </if>
-            <if test="minUpdateTime != null">
-                updateTime >= #{minUpdateTime}
+            <if test="param3 != null">
+                <![CDATA[createTime <= #{param3} ]]>
             </if>
-            <if test="maxUpdateTime != null">
-                <![CDATA[updateTime <= #{maxUpdateTime} ]]>
+            <if test="param4 != null">
+                updateTime >= #{param4}
             </if>
-            <if test="status != null">
-                , status = #{status}
+            <if test="param5 != null">
+                <![CDATA[updateTime <= #{param5} ]]>
             </if>
         </trim>
-        <if test="limit != null">
+        <if test="param7 != null">
             ORDER BY id
-            <if test="beginIndex == null">
-                limit #{limit}
+            <if test="param6 == null">
+                limit #{param7}
             </if>
-            <if test="beginIndex != null">
-                limit #{beginIndex}, #{limit}
+            <if test="param6 != null">
+                limit #{param6}, #{param7}
             </if>
         </if>
+    </select>
+
+    <select id="count" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select count(*)
+        from t_account
+        <trim prefix="WHERE" prefixOverrides="AND ">
+            <if test="param1 != null">
+                status = #{param1}
+            </if>
+            <if test="param2 != null">
+                createTime >= #{param2}
+            </if>
+            <if test="param3 != null">
+                <![CDATA[createTime <= #{param3} ]]>
+            </if>
+            <if test="param4 != null">
+                updateTime >= #{param4}
+            </if>
+            <if test="param5 != null">
+                <![CDATA[updateTime <= #{param5} ]]>
+            </if>
+        </trim>
     </select>
 
     <insert id="insert" parameterType="zwh.talkonline_data_pub.model.Account" useGeneratedKeys="true" keyProperty="id">

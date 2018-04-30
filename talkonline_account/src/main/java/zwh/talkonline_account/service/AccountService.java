@@ -132,18 +132,27 @@ public class AccountService implements IAccountService{
             Integer pageNo = paramJson.getInteger("pageNo");
             Integer pageSize = paramJson.getInteger("pageSize");
             Integer accountId = paramJson.getInteger("accountId");
+            String accountName = paramJson.getString("accountName");
 
             Integer beginIndex = null;
             if(pageNo != null && beginIndex != null){
                 beginIndex = (pageNo - 1) * pageSize;
             }
 
-            if(accountId == null){
-                List<Account> accounts = accountMapper.selectByPage(Flag.ACTIVE, null, null, null, null, beginIndex, pageSize);
-                dataJson.put("accounts", accounts);
-            }else {
+            if(StringUtils.isNotEmpty(accountName)){
+                Account account = accountMapper.selectByName(accountName);
+                dataJson.put("account", account);
+            }else if(accountId != null){
                 Account account = accountMapper.selectById(accountId);
                 dataJson.put("account", account);
+            }else {
+                List<Account> accounts = accountMapper.selectByPage(Flag.ACTIVE, null, null, null, null, beginIndex, pageSize);
+                Integer totalNum = accountMapper.count(Flag.ACTIVE, null, null, null, null);
+                dataJson.put("accounts", accounts);
+                if(totalNum != null){
+                    dataJson.put("totalAccount", totalNum);
+                    dataJson.put("totalPage", totalNum / pageSize);
+                }
             }
         }catch (Exception e){
             logger.error("getAccounts 出现异常 ", e);

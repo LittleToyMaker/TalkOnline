@@ -17,9 +17,22 @@ public interface IAccountMapper {
     @RequestMapping("selectByName")
     Account selectByName(@RequestParam("name") String name);
     @RequestMapping("selectByPage")
-    List<Account> selectByPage(@RequestParam("status") Integer status, @RequestParam("minCreateTime") Date minCreateTime, @RequestParam("maxCreateTime") Date maxCreateTime, @RequestParam("minUpdateTime") Date minUpdateTime, @RequestParam("maxUpdateTime") Date maxUpdateTime, @RequestParam("beginIndex") Integer beginIndex, @RequestParam("limit") Integer limit);
+    List<Account> selectByPage(
+            @RequestParam(value = "status", required = false) Integer status
+            , @RequestParam(value = "minCreateTime", required = false) Date minCreateTime
+            , @RequestParam(value = "maxCreateTime", required = false) Date maxCreateTime
+            , @RequestParam(value = "minUpdateTime", required = false) Date minUpdateTime
+            , @RequestParam(value = "maxUpdateTime", required = false) Date maxUpdateTime
+            , @RequestParam(value = "beginIndex", required = false) Integer beginIndex
+            , @RequestParam(value = "limit", required = false) Integer limit);
+    @RequestMapping("count")
+    Integer count(@RequestParam(value = "status", required = false) Integer status
+            , @RequestParam(value = "minCreateTime", required = false) Date minCreateTime
+            , @RequestParam(value = "maxCreateTime", required = false) Date maxCreateTime
+            , @RequestParam(value = "minUpdateTime", required = false) Date minUpdateTime
+            , @RequestParam(value = "maxUpdateTime", required = false) Date maxUpdateTime);
     @RequestMapping("insert")
-    int insert(@RequestBody Account account);
+    Integer insert(@RequestBody Account account);
     @RequestMapping("update")
-    int update(@RequestBody Account account);
+    Integer update(@RequestBody Account account);
 }
